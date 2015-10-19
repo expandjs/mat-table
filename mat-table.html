@@ -57,6 +57,22 @@ An element used to display a [Material Design table](http://www.google.com/desig
                 display: table;
                 width: 100%;
             }
+
+            :host #matTableWrapper[foreground="dark"] ::content mat-tr[active] {
+                background: hsla(0, 0%, 0%, 0.02);
+            }
+
+            :host #matTableWrapper[foreground="light"] ::content mat-tr[active] {
+                background: hsla(0, 0%, 100%, 0.02);
+            }
+
+            :host #matTableWrapper[foreground="dark"] ::content mat-tr:hover {
+                background: hsla(0, 0%, 0%, 0.05);
+            }
+
+            :host #matTableWrapper[foreground="light"] ::content mat-tr:hover {
+                background: hsla(0, 0%, 100%, 0.05);
+            }
         </style>
 
         <mat-ink id="matTableWrapper">
