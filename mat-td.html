@@ -7,42 +7,44 @@ The complete set of contributors may be found at https://expandjs.github.io/CONT
 -->
 
 <!--
-An element used to display a [Material Design table cell](http://www.google.com/design/spec/components/data-tables.html).
+A custom element used to display a `table cell` from a [Material Design table cell](http://www.google.com/design/spec/components/data-tables.html).
 
-@element mat-table
+Setting `numeric` will make the containing text right-aligned.
+
+@element mat-td
 @description A custom element used to display a Material Design table cell
-@keywords material design, material table, web app, html5, expandjs, web-components
+@keywords material design, material table, expandjs, web app, custom elements, web-components
 @group containers
+
 @homepage http://expandjs.com/elements/mat-td
 @repository https://github.com/ExpandJS/mat-table
 @demo http://expandjs.com/demo/mat-table
 
-@dependency polymer Polymer/polymer#^1.0.0
-@dependency expandjs ExpandJS/expandjs#0.9.11
+@behavior xp-td-behavior /bower_components/xp-table-behavior/xp-td-behavior.html
 
-@devDependency mat-demo ExpandJS/mat-demo#0.9.11
+@dependency polymer Polymer/polymer#^1.0.0
+@dependency expandjs ExpandJS/expandjs#0.10.0
+@dependency xp-table-behavior ExpandJS/xp-table-behavior#0.10.0
+
+@devDependency mat-demo ExpandJS/mat-demo#0.10.0
 -->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-table-behavior/xp-td-behavior.html">
+<link rel="import" href="../xp-table-behavior/xp-td-styles.html">
 
 <dom-module id="mat-td">
 
-    <template>
+    <template strip-whitespace>
+
+        <style include="xp-td-styles"></style>
 
         <style>
             :host {
-                display: table-cell;
                 height: 48px;
-                overflow: visible;
                 padding-left: 28px;
                 padding-right: 28px;
-                text-align: left;
-                vertical-align: middle;
-            }
-
-            :host([numeric]) {
-                text-align: right;
             }
 
             :host(:nth-of-type(1)) {
@@ -60,7 +62,7 @@ An element used to display a [Material Design table cell](http://www.google.com/
             }
         </style>
 
-        <content id="content"></content>
+        <content></content>
 
     </template>
 
@@ -70,24 +72,10 @@ An element used to display a [Material Design table cell](http://www.google.com/
             // ELEMENT
             is: 'mat-td',
 
-            /*********************************************************************/
-
-            // PROPERTIES
-            properties: {
-
-                /**
-                 * If set to true, the cell's content will be right aligned.
-                 *
-                 * @attribute numeric
-                 * @type boolean
-                 * @default false
-                 */
-                numeric: {
-                    reflectToAttribute: true,
-                    type: Boolean,
-                    value: false
-                }
-            }
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPTableCellBehavior
+            ]
         });
     </script>
 

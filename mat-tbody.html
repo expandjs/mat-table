@@ -7,37 +7,38 @@ The complete set of contributors may be found at https://expandjs.github.io/CONT
 -->
 
 <!--
-An element used to display a [Material Design table body](http://www.google.com/design/spec/components/data-tables.html).
+A custom element used to display a `table body` from a [Material Design table body](http://www.google.com/design/spec/components/data-tables.html).
 
-@element mat-table
+@element mat-tbody
 @description A custom element used to display a Material Design table body
-@keywords material design, material table, web app, html5, expandjs, web-components
+@keywords material design, material table, expandjs, web app, custom elements, web-components
 @group containers
+
 @homepage http://expandjs.com/elements/mat-tbody
 @repository https://github.com/ExpandJS/mat-table
 @demo http://expandjs.com/demo/mat-table
 
-@dependency polymer Polymer/polymer#^1.0.0
-@dependency expandjs ExpandJS/expandjs#0.9.11
+@behavior xp-tbody-behavior /bower_components/xp-table-behavior/xp-tbody-behavior.html
 
-@devDependency mat-demo ExpandJS/mat-demo#0.9.11
+@dependency polymer Polymer/polymer#^1.0.0
+@dependency expandjs ExpandJS/expandjs#0.10.0
+@dependency xp-table-behavior ExpandJS/xp-table-behavior#0.10.0
+
+@devDependency mat-demo ExpandJS/mat-demo#0.10.0
 -->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-table-behavior/xp-tbody-behavior.html">
+<link rel="import" href="../xp-table-behavior/xp-tbody-styles.html">
 
 <dom-module id="mat-tbody">
 
-    <template>
+    <template strip-whitespace>
 
-        <style>
-            :host {
-                display: table-row-group;
-                overflow: visible;
-            }
-        </style>
+        <style include="xp-tbody-styles"></style>
 
-        <content id="content" select="mat-tr"></content>
+        <content select=".table-row"></content>
 
     </template>
 
@@ -45,7 +46,12 @@ An element used to display a [Material Design table body](http://www.google.com/
         Polymer({
 
             // ELEMENT
-            is: 'mat-tbody'
+            is: 'mat-tbody',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPTableBodyBehavior
+            ]
         });
     </script>
 

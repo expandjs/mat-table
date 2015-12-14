@@ -7,33 +7,63 @@ The complete set of contributors may be found at https://expandjs.github.io/CONT
 -->
 
 <!--
-An element used to display a [Material Design table](http://www.google.com/design/spec/components/data-tables.html).
+A custom element used to display a [Material Design table](http://www.google.com/design/spec/components/data-tables.html).
+
+It follows the structure of a generic HTML table.
+
+```html
+<mat-table>
+
+    <mat-thead>
+        <mat-th>...</mat-th>
+        <mat-th>...</mat-th>
+        <mat-th>...</mat-th>
+        ...
+    </mat-head>
+
+    <mat-tbody>
+        <mat-tr>
+            <mat-td>...</mat-td>
+            <mat-td>...</mat-td>
+            <mat-td>...</mat-td>
+            ...
+        </mat-tr>
+        ...
+    </mat-tbody>
+
+</mat-table>
+```
+
+Setting `selectable` on `mat-table` will make the table's rows selectable.
 
 @element mat-table
 @description A custom element used to display a Material Design table
-@keywords material design, material table, web app, html5, expandjs, web-components
+@keywords material design, material table, expandjs, web app, custom elements, web-components
 @group containers
+
 @homepage http://expandjs.com/elements/mat-table
 @repository https://github.com/ExpandJS/mat-table
 @demo http://expandjs.com/demo/mat-table
 
-@behavior xp-master-behavior /bower_components/xp-master-behavior/xp-master-behavior.html
-@behavior xp-multi-select-behavior /bower_components/xp-multi-select-behavior/xp-multi-select-behavior.html
+@behavior mat-ink-behavior /bower_components/mat-ink/mat-ink-behavior.html
+@behavior xp-table-behavior /bower_components/xp-table-behavior/xp-table-behavior.html
 
 @dependency polymer Polymer/polymer#^1.0.0
-@dependency expandjs ExpandJS/expandjs#0.9.11
-@dependency mat-ink ExpandJS/mat-ink#0.9.11
-@dependency xp-master-behavior ExpandJS/xp-master-behavior#0.9.11
-@dependency xp-multi-select-behavior ExpandJS/xp-multi-select-behavior#0.9.11
+@dependency expandjs ExpandJS/expandjs#0.10.0
+@dependency mat-ink ExpandJS/mat-ink#0.10.0
+@dependency mat-typography ExpandJS/mat-typography#0.10.0
+@dependency xp-table-behavior ExpandJS/xp-table-behavior#0.10.0
 
-@devDependency mat-demo ExpandJS/mat-demo#0.9.11
+@devDependency mat-demo ExpandJS/mat-demo#0.10.0
 -->
 
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../expandjs/expandjs.html">
-<link rel="import" href="../mat-ink/mat-ink.html">
-<link rel="import" href="../xp-master-behavior/xp-master-behavior.html">
-<link rel="import" href="../xp-multi-select-behavior/xp-multi-select-behavior.html">
+<link rel="import" href="../mat-ink/mat-ink-behavior.html">
+<link rel="import" href="../mat-ink/mat-ink-styles.html">
+<link rel="import" href="../mat-typography/mat-typography.html">
+<link rel="import" href="../xp-table-behavior/xp-table-behavior.html">
+<link rel="import" href="../xp-table-behavior/xp-table-styles.html">
 <link rel="import" href="mat-tbody.html">
 <link rel="import" href="mat-td.html">
 <link rel="import" href="mat-th.html">
@@ -42,42 +72,30 @@ An element used to display a [Material Design table](http://www.google.com/desig
 
 <dom-module id="mat-table">
 
-    <template>
+    <template strip-whitespace>
+
+        <style include="mat-ink-styles"></style>
+        <style include="xp-table-styles"></style>
 
         <style>
             :host {
                 @apply(--mat-font-body);
-                display: block;
                 font-size: 13px !important;
-                overflow: visible;
-                position: relative;
             }
 
-            :host #matTableWrapper {
-                display: table;
-                width: 100%;
-            }
+            /* DARK FOREGROUND */
 
-            :host #matTableWrapper[foreground="dark"] ::content mat-tr[active] {
-                background: hsla(0, 0%, 0%, 0.02);
-            }
+            :host([foreground="dark"]) ::content .table-row[active] { background: hsla(0, 0%, 0%, 0.02); }
+            :host([foreground="dark"]) ::content .table-row:hover { background: hsla(0, 0%, 0%, 0.05); }
 
-            :host #matTableWrapper[foreground="light"] ::content mat-tr[active] {
-                background: hsla(0, 0%, 100%, 0.02);
-            }
+            /* LIGHT FOREGROUND */
 
-            :host #matTableWrapper[foreground="dark"] ::content mat-tr:hover {
-                background: hsla(0, 0%, 0%, 0.05);
-            }
+            :host([foreground="light"]) ::content .table-row[active] { background: hsla(0, 0%, 100%, 0.02); }
+            :host([foreground="light"]) ::content .table-row:hover { background: hsla(0, 0%, 100%, 0.05); }
 
-            :host #matTableWrapper[foreground="light"] ::content mat-tr:hover {
-                background: hsla(0, 0%, 100%, 0.05);
-            }
         </style>
 
-        <mat-ink id="matTableWrapper">
-            <content id="content" select="mat-tbody,mat-thead,mat-tr"></content>
-        </mat-ink>
+        <content select=".table-body,.table-header,.table-row"></content>
 
     </template>
 
@@ -89,132 +107,9 @@ An element used to display a [Material Design table](http://www.google.com/desig
 
             // BEHAVIORS
             behaviors: [
-                Polymer.XPMasterBehavior,
-                Polymer.XPMultiSelectBehavior
-            ],
-
-            /*********************************************************************/
-
-            /**
-             * Returns the slaves map.
-             *
-             * @method _setupSlaves
-             * @returns {Object}
-             * @private
-             */
-            _setupSlaves: function () {
-                return {headers: 'mat-thead'};
-            },
-
-            /*********************************************************************/
-
-            // LISTENERS
-            listeners: {
-                'xp-active': '_handleActive'
-            },
-
-            // PROPERTIES
-            properties: {
-
-                /**
-                 * If set to true, the selectable items are searched deep.
-                 *
-                 * @attribute deep
-                 * @type boolean
-                 * @default true
-                 */
-                deep: {
-                    reflectToAttribute: true,
-                    type: Boolean,
-                    value: true
-                },
-
-                /**
-                 * The slave headers.
-                 *
-                 * @attribute headers
-                 * @type Array
-                 * @notifies
-                 * @readonly
-                 */
-                headers: {
-                    notify: true,
-                    readOnly: true,
-                    type: Array,
-                    value: function () { return []; }
-                },
-
-                /**
-                 * The selector used to recognize selectable rows.
-                 *
-                 * @attribute item-selector
-                 * @type string
-                 * @default "mat-tr"
-                 */
-                itemSelector: {
-                    reflectToAttribute: true,
-                    type: String,
-                    value: 'mat-tr'
-                },
-
-                /**
-                 * If set to true, multi selection is allowed.
-                 *
-                 * @attribute multi
-                 * @type boolean
-                 * @default true
-                 */
-                multi: {
-                    reflectToAttribute: true,
-                    type: Boolean,
-                    value: true
-                },
-
-                /**
-                 * If set to true, the table's rows are selectable.
-                 *
-                 * @attribute selectable
-                 * @type boolean
-                 * @default false
-                 */
-                selectable: {
-                    reflectToAttribute: true,
-                    observer: '_selectableChanged',
-                    type: Boolean,
-                    value: false
-                }
-            },
-
-            /*********************************************************************/
-
-            // OBSERVER
-            _selectableChanged: function (post) {
-                if (!post) { this.unselectAll(); }
-            },
-
-            /*********************************************************************/
-
-            // HANDLER
-            _handleActive: function (event) {
-
-                // Vars
-                var self   = this,
-                    active = event.detail.isActive,
-                    firer  = event.detail.firer,
-                    header = self.headers[0];
-
-                // Handling row
-                if (header !== firer) {
-                    if (active) { self.select(firer, true); } else { self.unselect(firer, false, true); }
-                    if (header) { header.active = self.selection.length === self.items.length; }
-                    return;
-                }
-
-                // Handling header
-                if (active) { self.selectAll(); return; }
-                if (self.selection.length === self.items.length) { self.unselectAll(); return; }
-                if (header) { header.active = false; }
-            }
+                Polymer.MatInkBehavior,
+                Polymer.XPTableBehavior
+            ]
         });
     </script>
 
