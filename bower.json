@@ -24,7 +24,6 @@
   "dependencies": {
     "expandjs": "ExpandJS/expandjs#0.10.0",
     "mat-checkbox": "ExpandJS/mat-checkbox#0.10.0",
-    "mat-divider": "ExpandJS/mat-divider#0.10.0",
     "mat-icon": "ExpandJS/mat-icon#0.10.0",
     "mat-icons": "ExpandJS/mat-icons#0.10.0",
     "mat-ink": "ExpandJS/mat-ink#0.10.0",

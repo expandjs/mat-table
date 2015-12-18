@@ -23,7 +23,6 @@ A custom element used to display a `table row` from a [Material Design table row
 @dependency polymer Polymer/polymer#^1.0.0
 @dependency expandjs ExpandJS/expandjs#0.10.0
 @dependency mat-checkbox ExpandJS/mat-checkbox#0.10.0
-@dependency mat-divider ExpandJS/mat-divider#0.10.0
 @dependency xp-table-behavior ExpandJS/xp-table-behavior#0.10.0
 
 @devDependency mat-demo ExpandJS/mat-demo#0.10.0
@@ -32,7 +31,6 @@ A custom element used to display a `table row` from a [Material Design table row
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../expandjs/expandjs.html">
 <link rel="import" href="../mat-checkbox/mat-checkbox.html">
-<link rel="import" href="../mat-divider/mat-divider.html">
 <link rel="import" href="../xp-table-behavior/xp-tr-behavior.html">
 <link rel="import" href="../xp-table-behavior/xp-tr-styles.html">
 
@@ -44,22 +42,14 @@ A custom element used to display a `table row` from a [Material Design table row
 
         <style>
             :host .checkbox {
-                margin: 4px -12px 4px 12px;
+                margin: 3px -12px 4px 12px;
             }
 
             :host-context(mat-table:not([selectable])) .checkbox {
                 display: none !important;
             }
-
-            :host .divider {
-                left: 0;
-                padding: 0;
-                position: absolute;
-                right: 0;
-            }
         </style>
 
-        <mat-divider class="divider"></mat-divider>
         <mat-checkbox class="checkbox" checked="{{active}}" on-xp-active="_switchHandler"></mat-checkbox>
         <content select=".table-cell"></content>
 
