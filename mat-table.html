@@ -85,13 +85,13 @@ Setting `selectable` on `mat-table` will make the table's rows selectable.
 
             /* DARK FOREGROUND */
 
-            :host([foreground="dark"]) ::content .table-row { border-top: 1px solid hsla(0, 0%, 0%, 0.12); }
+            :host([foreground="dark"]) ::content .table-row .table-cell { border-top: 1px solid hsla(0, 0%, 0%, 0.12); }
             :host([foreground="dark"]) ::content .table-row[active] { background: hsla(0, 0%, 0%, 0.02); }
             :host([foreground="dark"]) ::content .table-row:hover { background: hsla(0, 0%, 0%, 0.05); }
 
             /* LIGHT FOREGROUND */
 
-            :host([foreground="light"]) ::content .table-row { border-top: 1px solid hsla(0, 0%, 100%, 0.12); }
+            :host([foreground="light"]) ::content .table-row .table-cell { border-top: 1px solid hsla(0, 0%, 100%, 0.12); }
             :host([foreground="light"]) ::content .table-row[active] { background: hsla(0, 0%, 100%, 0.02); }
             :host([foreground="light"]) ::content .table-row:hover { background: hsla(0, 0%, 100%, 0.05); }
 
